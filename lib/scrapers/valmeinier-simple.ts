@@ -38,47 +38,25 @@ async function randomDelay(maxMs: number): Promise<void> {
 }
 
 export async function scrapeValmeinierSimple(): Promise<ScrapedData | null> {
-  const url = 'https://www.valmeinier.com/enneigement/'
+  const targetUrl = 'https://www.valmeinier.com/enneigement/'
+  const apiKey = process.env.SCRAPINGANT_API_KEY
 
   console.log(`[Valmeinier Simple Scraper] Starting scrape at ${new Date().toISOString()}`)
 
+  if (!apiKey) {
+    throw new Error('SCRAPINGANT_API_KEY is not defined in environment variables')
+  }
+
   try {
-    // Délai aléatoire entre 0 et 300 secondes (5 minutes)
-    // await randomDelay(300000)
+    // Build ScrapingAnt API URL
+    const scrapingAntUrl = `https://api.scrapingant.com/v2/general?url=${encodeURIComponent(targetUrl)}&x-api-key=${apiKey}&proxy_country=FR&browser=false`
 
-    // Sélectionner un User-Agent aléatoire
-    const userAgent = getRandomUserAgent()
-    console.log(`[Valmeinier Simple Scraper] Using User-Agent: ${userAgent.substring(0, 50)}...`)
+    console.log(`[Valmeinier Simple Scraper] Fetching via ScrapingAnt...`)
 
-    // Fetch the HTML
-    console.log(`[Valmeinier Simple Scraper] Fetching ${url}`)
-    const response = await fetch(url, {
-      headers: {
-        'User-Agent': userAgent,
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-        'Accept-Language': 'fr-FR,fr;q=0.9,en-US;q=0.8,en;q=0.7',
-        'Accept-Encoding': 'gzip, deflate, br',
-        'DNT': '1',
-        'Connection': 'keep-alive',
-        'Upgrade-Insecure-Requests': '1',
-      }
-    })
+    const response = await fetch(scrapingAntUrl)
 
     if (!response.ok) {
-      // Log detailed debug info
-      console.error(`[Valmeinier Simple Scraper] HTTP Error: ${response.status} ${response.statusText}`)
-      console.error(`[Valmeinier Simple Scraper] Response URL: ${response.url}`)
-      console.error(`[Valmeinier Simple Scraper] Response Headers:`)
-      response.headers.forEach((value, key) => {
-        console.error(`  ${key}: ${value}`)
-      })
-
-      // Get response body for more context
-      const errorBody = await response.text()
-      console.error(`[Valmeinier Simple Scraper] Response Body:`)
-      console.error(errorBody)
-
-      throw new Error(`HTTP error! status: ${response.status} - ${response.statusText}`)
+      throw new Error(`ScrapingAnt error! status: ${response.status}`)
     }
 
     const html = await response.text()

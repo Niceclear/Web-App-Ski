@@ -299,7 +299,7 @@ export default function DashboardPage() {
           {/* Détails par difficulté */}
           <section aria-labelledby="difficulty-heading">
             <h2 id="difficulty-heading" className="text-2xl font-bold text-gray-900 mb-6">
-              Détail par Difficulté
+              Détail par difficulté
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" role="list" aria-label="Liste des pistes par difficulté">
               {displayedData.greenSlopes && (

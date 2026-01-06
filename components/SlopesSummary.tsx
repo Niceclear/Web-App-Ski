@@ -12,7 +12,7 @@ function getSkiConditionStatus(percentage: number) {
   if (percentage === 0) {
     return {
       status: 'closed',
-      label: 'Domaine Fermé',
+      label: 'Domaine fermé',
       ariaLabel: 'Attention : le domaine skiable est actuellement fermé',
       gradient: 'from-gray-700 to-gray-900',
       textColor: 'text-gray-300',
@@ -25,7 +25,7 @@ function getSkiConditionStatus(percentage: number) {
   } else if (percentage < 25) {
     return {
       status: 'critical',
-      label: 'Ouverture Limitée',
+      label: 'Ouverture limitée',
       ariaLabel: 'Attention : ouverture très limitée avec moins de 25 pourcent des pistes',
       gradient: 'from-red-600 to-red-800',
       textColor: 'text-red-100',
@@ -38,7 +38,7 @@ function getSkiConditionStatus(percentage: number) {
   } else if (percentage < 50) {
     return {
       status: 'low',
-      label: 'Ouverture Partielle',
+      label: 'Ouverture partielle',
       ariaLabel: 'Ouverture partielle avec moins de 50 pourcent des pistes',
       gradient: 'from-orange-600 to-orange-800',
       textColor: 'text-orange-100',
@@ -51,20 +51,20 @@ function getSkiConditionStatus(percentage: number) {
   } else if (percentage < 75) {
     return {
       status: 'good',
-      label: 'Bonne Ouverture',
+      label: 'Bonne ouverture',
       ariaLabel: 'Bonne ouverture avec plus de 50 pourcent des pistes',
       gradient: 'from-blue-600 to-blue-800',
       textColor: 'text-blue-100',
       icon: TrendingUp,
       iconColor: 'text-green-300',
       progressColor: 'bg-gradient-to-r from-blue-400 to-blue-500',
-      message: 'Majorite des pistes accessibles',
+      message: 'Majorité des pistes accessibles',
       animate: ''
     }
   } else {
     return {
       status: 'excellent',
-      label: 'Excellent Enneigement',
+      label: 'Excellent enneigement',
       ariaLabel: 'Excellentes conditions avec plus de 75 pour cent des pistes ouvertes',
       gradient: 'from-green-600 to-green-800',
       textColor: 'text-green-100',

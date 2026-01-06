@@ -146,6 +146,9 @@ export default function DashboardPage() {
       throw new Error(error.error || 'Mot de passe incorrect')
     }
 
+    // Délai de 2 secondes pour laisser le temps à la BDD de sauvegarder
+    await new Promise(resolve => setTimeout(resolve, 2000))
+
     // Rafraîchir les données après le scraping
     mutate()
   }

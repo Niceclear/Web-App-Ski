@@ -6,8 +6,8 @@ import { desc, eq } from 'drizzle-orm'
 // Force dynamic rendering for this route (uses request.url)
 export const dynamic = 'force-dynamic'
 
-// Revalidation: cache for 60 seconds (data updates every 5 min on client anyway)
-export const revalidate = 60
+// No cache - always fetch fresh data
+export const revalidate = 0
 
 // GET /api/slopes - Get latest slopes data
 export async function GET(request: Request) {
@@ -80,7 +80,6 @@ export async function GET(request: Request) {
       .where(eq(slopes.resortId, resortId))
       .orderBy(slopes.difficulty, slopes.name)
 
-    // Optimisation: Cache-Control header pour CDN et navigateur
     return NextResponse.json({
       resort: resort[0],
       latestData: latestData[0] || null,
@@ -88,7 +87,7 @@ export async function GET(request: Request) {
       slopes: currentSlopes,
     }, {
       headers: {
-        'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300',
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
       },
     })
 

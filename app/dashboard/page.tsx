@@ -142,17 +142,22 @@ export default function DashboardPage() {
       body: JSON.stringify({ password }),
     })
 
+    const data = await response.json()
+
     if (!response.ok) {
-      const errorData = await response.json()
-      const errorMessage = typeof errorData.error === 'string'
-        ? errorData.error
-        : (errorData.error?.message || JSON.stringify(errorData.error) || 'Erreur inconnue')
+      const errorMessage = typeof data.error === 'string'
+        ? data.error
+        : (data.error?.message || JSON.stringify(data.error) || 'Erreur inconnue')
       throw new Error(errorMessage)
     }
 
-    // Rafraîchir les données après le scraping
-    mutate()
-    mutateWeather()
+    // Rafraîchir les données après le scraping (uniquement si ce n'est pas un easter egg)
+    if (!data.data?.easterEgg) {
+      mutate()
+      mutateWeather()
+    }
+
+    return data.data
   }
 
   if (error) {

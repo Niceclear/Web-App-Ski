@@ -1,0 +1,56 @@
+{
+  "name": "web-app-ski",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Application de monitoring des pistes de ski - Valmeinier",
+  "author": "Web App Ski Team",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "lint:fix": "next lint --fix",
+    "type-check": "tsc --noEmit",
+    "validate": "npm run type-check && npm run lint",
+    "db:push": "drizzle-kit push",
+    "db:studio": "drizzle-kit studio",
+    "db:migrate": "drizzle-kit migrate",
+    "scrape": "tsx lib/scrapers/valmeinier-simple.ts",
+    "cron": "tsx server.ts",
+    "seed:test": "tsx scripts/seed-test-data.ts",
+    "clean": "rm -rf .next node_modules/.cache",
+    "prebuild": "npm run validate"
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "^0.9.0",
+    "cheerio": "^1.0.0",
+    "date-fns": "^3.0.0",
+    "dotenv": "^16.4.0",
+    "drizzle-orm": "^0.33.0",
+    "lucide-react": "^0.309.0",
+    "next": "^14.2.0",
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0",
+    "swr": "^2.2.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/node-cron": "^3.0.11",
+    "@types/react": "^18.3.0",
+    "@types/react-dom": "^18.3.0",
+    "autoprefixer": "^10.4.0",
+    "drizzle-kit": "^0.24.0",
+    "eslint": "^8.0.0",
+    "eslint-config-next": "^14.2.0",
+    "node-cron": "^3.0.3",
+    "postcss": "^8.4.0",
+    "tailwindcss": "^3.4.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.0.0"
+  }
+}

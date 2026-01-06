@@ -7,6 +7,7 @@ import { fr } from 'date-fns/locale'
 
 interface WeatherCardProps {
   forecast: WeatherDay[]
+  scrapedAt?: string
 }
 
 function getWeatherIcon(type: string, size = "w-12 h-12") {
@@ -32,7 +33,7 @@ function getWeatherIcon(type: string, size = "w-12 h-12") {
   return <Cloud className={`${size} text-gray-400`} />
 }
 
-export default function WeatherCard({ forecast }: WeatherCardProps) {
+export default function WeatherCard({ forecast, scrapedAt }: WeatherCardProps) {
   const [selectedLayer, setSelectedLayer] = useState<WeatherElevation>('base')
 
   const upcomingWeather = forecast || []
@@ -54,7 +55,14 @@ export default function WeatherCard({ forecast }: WeatherCardProps) {
           <div className="bg-blue-600 p-2 rounded-xl shadow-md">
             <CloudSun className="w-5 h-5 text-white" />
           </div>
-          <h2 className="text-lg font-bold text-gray-900">Météo</h2>
+          <div>
+            <h2 className="text-lg font-bold text-gray-900">Météo</h2>
+            {scrapedAt && (
+              <p className="text-[10px] text-gray-400 font-medium leading-tight">
+                Dernière mise à jour : {format(new Date(scrapedAt), "HH:mm", { locale: fr })}
+              </p>
+            )}
+          </div>
         </div>
 
         {/* Altitude Selector */}

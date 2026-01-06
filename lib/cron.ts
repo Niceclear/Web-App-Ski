@@ -85,7 +85,8 @@ export async function manualScrape() {
     }
 
     await runValmeinierSimpleScraper()
-    console.log('[Manual] ✅ Manual scrape completed')
+    await runWeatherScraper()
+    console.log('[Manual] ✅ Manual scrape (slopes & weather) completed')
   } catch (error) {
     console.error('[Manual] ❌ Manual scrape failed:', error)
     throw error

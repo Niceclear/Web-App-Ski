@@ -108,7 +108,8 @@ export default function DashboardPage() {
   const {
     data: weatherResponse,
     error: weatherError,
-    isLoading: weatherIsLoading
+    isLoading: weatherIsLoading,
+    mutate: mutateWeather
   } = useSWR<{ success: boolean; data: WeatherData }>(
     `/api/weather?resort=${selectedResort}`,
     fetcher,
@@ -151,6 +152,7 @@ export default function DashboardPage() {
 
     // Rafraîchir les données après le scraping
     mutate()
+    mutateWeather()
   }
 
   if (error) {
@@ -329,7 +331,10 @@ export default function DashboardPage() {
             {weatherIsLoading ? (
               <WeatherSkeleton />
             ) : weatherData ? (
-              <WeatherCard forecast={weatherData.forecast} />
+              <WeatherCard
+                forecast={weatherData.forecast}
+                scrapedAt={weatherData.scrapedAt}
+              />
             ) : (
               <div className="bg-white rounded-2xl p-8 border-2 border-dashed border-gray-300 text-center">
                 <CloudSun className="w-16 h-16 text-gray-400 mx-auto mb-4" aria-hidden="true" />

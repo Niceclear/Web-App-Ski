@@ -18,40 +18,53 @@ function secureCompare(a: string, b: string): boolean {
   return result === 0
 }
 
-// GET /api/scrape/weather - Called by Vercel Cron at 00:30
-export async function GET(request: NextRequest) {
+// POST /api/scrape/weather - Manual weather scrape (password protected)
+export async function POST(request: NextRequest) {
   try {
-    // Verify Vercel Cron secret
-    const authHeader = request.headers.get('authorization')
-    const cronSecret = process.env.CRON_SECRET
+    // Rate limiting: prevent brute force by adding delay
+    await new Promise(resolve => setTimeout(resolve, 500))
 
-    if (!cronSecret) {
-      logger.error('CRON_SECRET environment variable is not set')
+    // Password authentication
+    let body: { password?: string }
+    try {
+      body = await request.json()
+    } catch {
+      return errorResponse(ErrorCodes.BAD_REQUEST, 'Invalid request body')
+    }
+
+    const { password } = body
+    const SCRAPE_PASSWORD = process.env.SCRAPE_PASSWORD
+
+    if (!SCRAPE_PASSWORD) {
+      logger.error('SCRAPE_PASSWORD environment variable is not set')
       return errorResponse(
         ErrorCodes.CONFIGURATION_ERROR,
         'Server configuration error'
       )
     }
 
-    if (!authHeader || !secureCompare(authHeader, `Bearer ${cronSecret}`)) {
-      logger.warn('Unauthorized weather cron request attempt', {
-        hasHeader: !!authHeader,
-        ip: request.headers.get('x-forwarded-for') || 'unknown',
-      })
-      return errorResponse(ErrorCodes.UNAUTHORIZED, 'Unauthorized')
+    if (!password || typeof password !== 'string') {
+      return errorResponse(ErrorCodes.UNAUTHORIZED, 'Mot de passe requis')
     }
 
-    logger.info('Vercel Cron weather scrape triggered')
+    if (!secureCompare(password, SCRAPE_PASSWORD)) {
+      logger.warn('Failed password attempt from manual weather scrape', {
+        ip: request.headers.get('x-forwarded-for') || 'unknown',
+      })
+      return errorResponse(ErrorCodes.UNAUTHORIZED, 'Mot de passe incorrect')
+    }
+
+    logger.info('Manual weather scrape triggered')
 
     await runWeatherScraper()
 
-    logger.info('Cron weather scraping completed successfully')
+    logger.info('Manual weather scraping completed successfully')
 
     return successResponse({
       message: 'Weather scraping completed successfully',
     })
 
   } catch (error) {
-    return handleApiError(error, 'Weather cron scraping failed')
+    return handleApiError(error, 'Manual weather scraping failed')
   }
 }

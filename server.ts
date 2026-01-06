@@ -2,10 +2,10 @@
 // This would typically run in a separate process or container
 
 import 'dotenv/config'
-import { setupCronJobs } from './lib/cron'
+// import { setupCronJobs } from './lib/cron'
 
 console.log('Starting cron server...')
-setupCronJobs()
+// setupCronJobs()
 
 console.log('Cron server running. Press Ctrl+C to stop.')
 

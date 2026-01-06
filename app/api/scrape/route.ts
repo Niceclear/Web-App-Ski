@@ -33,26 +33,23 @@ export async function GET(request: Request) {
       )
     }
 
-    return errorResponse(ErrorCodes.UNAUTHORIZED, 'Unauthorized')
+    if (!authHeader || !secureCompare(authHeader, `Bearer ${cronSecret}`)) {
+      logger.warn('Unauthorized cron request attempt', {
+        hasHeader: !!authHeader,
+        ip: request.headers.get('x-forwarded-for') || 'unknown',
+      })
+      return errorResponse(ErrorCodes.UNAUTHORIZED, 'Unauthorized')
+    }
 
-    // if (!authHeader || !secureCompare(authHeader, `Bearer ${cronSecret}`)) {
-    //   logger.warn('Unauthorized cron request attempt', {
-    //     hasHeader: !!authHeader,
-    //     ip: request.headers.get('x-forwarded-for') || 'unknown',
-    //   })
-    //   return errorResponse(ErrorCodes.UNAUTHORIZED, 'Unauthorized')
-    // }
+    logger.info('Vercel Cron scrape triggered')
 
-    // logger.info('Vercel Cron scrape triggered')
+    await manualScrape()
 
-    // await manualScrape()
+    logger.info('Cron scraping completed successfully')
 
-    // logger.info('Cron scraping completed successfully')
-
-    // return successResponse({
-    //   message: 'Cron scraping completed successfully',
-    // })
-
+    return successResponse({
+      message: 'Cron scraping completed successfully',
+    })
   } catch (error) {
     return handleApiError(error, 'Cron scraping failed')
   }

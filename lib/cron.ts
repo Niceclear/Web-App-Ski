@@ -5,48 +5,48 @@ import { db } from './db'
 import { slopesData, skiResorts } from './schema'
 import { desc, eq } from 'drizzle-orm'
 
-export function setupCronJobs() {
-  // Scrape Valmeinier at 7:00 AM every day
-  cron.schedule('0 7 * * *', async () => {
-    console.log('[Cron] Running Valmeinier scraper at 7:00 AM')
-    try {
-      await runValmeinierSimpleScraper()
-    } catch (error) {
-      console.error('[Cron] Error in 7:00 AM scrape:', error)
-    }
-  }, {
-    timezone: 'Europe/Paris'
-  })
+// export function setupCronJobs() {
+//   // Scrape Valmeinier at 7:00 AM every day
+//   cron.schedule('0 7 * * *', async () => {
+//     console.log('[Cron] Running Valmeinier scraper at 7:00 AM')
+//     try {
+//       await runValmeinierSimpleScraper()
+//     } catch (error) {
+//       console.error('[Cron] Error in 7:00 AM scrape:', error)
+//     }
+//   }, {
+//     timezone: 'Europe/Paris'
+//   })
 
-  // Scrape Valmeinier at 12:00 PM (noon) every day
-  cron.schedule('0 12 * * *', async () => {
-    console.log('[Cron] Running Valmeinier scraper at 12:00 PM')
-    try {
-      await runValmeinierSimpleScraper()
-    } catch (error) {
-      console.error('[Cron] Error in 12:00 PM scrape:', error)
-    }
-  }, {
-    timezone: 'Europe/Paris'
-  })
+//   // Scrape Valmeinier at 12:00 PM (noon) every day
+//   cron.schedule('0 12 * * *', async () => {
+//     console.log('[Cron] Running Valmeinier scraper at 12:00 PM')
+//     try {
+//       await runValmeinierSimpleScraper()
+//     } catch (error) {
+//       console.error('[Cron] Error in 12:00 PM scrape:', error)
+//     }
+//   }, {
+//     timezone: 'Europe/Paris'
+//   })
 
-  // Scrape Weather at 00:30 AM every day
-  cron.schedule('30 0 * * *', async () => {
-    console.log('[Cron] Running Weather scraper at 00:30 AM')
-    try {
-      await runWeatherScraper()
-    } catch (error) {
-      console.error('[Cron] Error in 00:30 AM weather scrape:', error)
-    }
-  }, {
-    timezone: 'Europe/Paris'
-  })
+//   // Scrape Weather at 00:30 AM every day
+//   cron.schedule('30 0 * * *', async () => {
+//     console.log('[Cron] Running Weather scraper at 00:30 AM')
+//     try {
+//       await runWeatherScraper()
+//     } catch (error) {
+//       console.error('[Cron] Error in 00:30 AM weather scrape:', error)
+//     }
+//   }, {
+//     timezone: 'Europe/Paris'
+//   })
 
-  console.log('[Cron] ✅ Cron jobs scheduled:')
-  console.log('  - Valmeinier scraper: 7:00 AM Europe/Paris')
-  console.log('  - Valmeinier scraper: 12:00 PM Europe/Paris')
-  console.log('  - Weather scraper: 00:30 AM Europe/Paris')
-}
+//   console.log('[Cron] ✅ Cron jobs scheduled:')
+//   console.log('  - Valmeinier scraper: 7:00 AM Europe/Paris')
+//   console.log('  - Valmeinier scraper: 12:00 PM Europe/Paris')
+//   console.log('  - Weather scraper: 00:30 AM Europe/Paris')
+// }
 
 // Optional: Manual trigger function for testing
 export async function manualScrape() {

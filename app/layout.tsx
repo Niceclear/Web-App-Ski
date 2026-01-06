@@ -11,7 +11,7 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   // Optimisation SEO: metadataBase pour les URLs absolues des images OG/Twitter
-  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || 'https://ski.example.com'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || 'https://web-app-ski.vercel.app/'),
   title: {
     default: 'Suivi des Pistes de Ski - Valmeinier',
     template: '%s | Suivi des Pistes de Ski',
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'fr_FR',
-    url: 'https://ski.example.com',
+    url: 'https://web-app-ski.vercel.app/',
     siteName: 'Suivi des Pistes de Ski',
     title: 'Suivi des Pistes de Ski - Valmeinier',
     description: 'Consultez en temps reel l\'etat des pistes de ski a Valmeinier. Verifiez les pistes ouvertes et les conditions d\'enneigement.',

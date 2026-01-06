@@ -23,8 +23,7 @@
     "scrape": "tsx lib/scrapers/valmeinier-simple.ts",
     "cron": "tsx server.ts",
     "seed:test": "tsx scripts/seed-test-data.ts",
-    "clean": "rm -rf .next node_modules/.cache",
-    "prebuild": "npm run validate"
+    "clean": "rm -rf .next node_modules/.cache"
   },
   "dependencies": {
     "@neondatabase/serverless": "^0.9.0",

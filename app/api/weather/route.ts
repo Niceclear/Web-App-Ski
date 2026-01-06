@@ -51,7 +51,11 @@ export async function GET(request: NextRequest) {
       weatherData.resortName = 'Valloire'
     }
 
-    return successResponse<WeatherData>(weatherData)
+    return successResponse<WeatherData>(weatherData, 200, {
+      headers: {
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+      },
+    })
 
   } catch (error) {
     return handleApiError(error, 'Weather API error')

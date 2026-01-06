@@ -92,8 +92,8 @@ export async function scrapeWeatherSkiInfo(resortSlug: string = 'valmeinier'): P
         'Connection': 'keep-alive',
         'Upgrade-Insecure-Requests': '1',
       },
-      // Cache pendant 30 minutes
-      next: { revalidate: 1800 },
+      // Désactiver le cache pour garantir des données fraîches lors du scraping manuel
+      cache: 'no-store',
     })
 
     if (!response.ok) {

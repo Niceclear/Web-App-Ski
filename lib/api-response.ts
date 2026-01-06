@@ -54,14 +54,14 @@ const errorStatusMap: Record<ErrorCode, number> = {
 /**
  * Create a success response
  */
-export function successResponse<T>(data: T, status = 200): NextResponse<ApiSuccessResponse<T>> {
+export function successResponse<T>(data: T, status = 200, init?: ResponseInit): NextResponse<ApiSuccessResponse<T>> {
   return NextResponse.json(
     {
       success: true as const,
       data,
       timestamp: new Date().toISOString(),
     },
-    { status }
+    { ...init, status: status ?? init?.status ?? 200 }
   )
 }
 
@@ -71,9 +71,10 @@ export function successResponse<T>(data: T, status = 200): NextResponse<ApiSucce
 export function errorResponse(
   code: ErrorCode,
   message: string,
-  logContext?: Record<string, unknown>
+  logContext?: Record<string, unknown>,
+  init?: ResponseInit
 ): NextResponse<ApiErrorResponse> {
-  const status = errorStatusMap[code]
+  const status = init?.status ?? errorStatusMap[code]
 
   // Log errors appropriately
   if (status >= 500) {
@@ -91,7 +92,7 @@ export function errorResponse(
       },
       timestamp: new Date().toISOString(),
     },
-    { status }
+    { ...init, status }
   )
 }
 

@@ -6,15 +6,11 @@
   "crons": [
     {
       "path": "/api/scrape",
-      "schedule": "0 7 * * *"
-    },
-    {
-      "path": "/api/scrape",
-      "schedule": "0 12 * * *"
+      "schedule": "45 22 * * *"
     },
     {
       "path": "/api/scrape/weather",
-      "schedule": "30 0 * * *"
+      "schedule": "30 0,8,12,15,20 * * *"
     }
   ],
   "headers": [

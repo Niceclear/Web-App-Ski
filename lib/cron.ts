@@ -1,5 +1,6 @@
 import cron from 'node-cron'
 import { runValmeinierSimpleScraper } from './scrapers/valmeinier-simple'
+import { runWeatherScraper } from './scrapers/weather-skiinfo'
 import { db } from './db'
 import { slopesData, skiResorts } from './schema'
 import { desc, eq } from 'drizzle-orm'
@@ -29,9 +30,22 @@ export function setupCronJobs() {
     timezone: 'Europe/Paris'
   })
 
+  // Scrape Weather at 00:30 AM every day
+  cron.schedule('30 0 * * *', async () => {
+    console.log('[Cron] Running Weather scraper at 00:30 AM')
+    try {
+      await runWeatherScraper()
+    } catch (error) {
+      console.error('[Cron] Error in 00:30 AM weather scrape:', error)
+    }
+  }, {
+    timezone: 'Europe/Paris'
+  })
+
   console.log('[Cron] ✅ Cron jobs scheduled:')
   console.log('  - Valmeinier scraper: 7:00 AM Europe/Paris')
   console.log('  - Valmeinier scraper: 12:00 PM Europe/Paris')
+  console.log('  - Weather scraper: 00:30 AM Europe/Paris')
 }
 
 // Optional: Manual trigger function for testing

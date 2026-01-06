@@ -3,12 +3,13 @@
 
 import { useState } from 'react'
 import useSWR from 'swr'
-import { SlopesApiResponse } from '../../lib/types'
+import { SlopesApiResponse, WeatherData } from '../../lib/types'
 import SlopesSummary from '../../components/SlopesSummary'
 import SlopeCard from '../../components/SlopeCard'
 import ResortSelector from '../../components/ResortSelector'
 import DateTimeSelector from '../../components/DateTimeSelector'
 import PasswordModal from '../../components/PasswordModal'
+import WeatherCard from '../../components/WeatherCard'
 import { RefreshCw, CloudSun, AlertTriangle } from 'lucide-react'
 import { format } from 'date-fns'
 import { fr } from 'date-fns/locale'
@@ -75,12 +76,25 @@ function SlopeCardSkeleton() {
   )
 }
 
+function WeatherSkeleton() {
+  return (
+    <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200 animate-pulse">
+      <div className="h-8 w-40 bg-gray-200 rounded mb-6" />
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {[1, 2, 3].map((i) => (
+          <div key={i} className="h-48 bg-gray-200 rounded-xl" />
+        ))}
+      </div>
+    </div>
+  )
+}
+
 export default function DashboardPage() {
   const [selectedResort, setSelectedResort] = useState('Valmeinier')
   const [selectedDataId, setSelectedDataId] = useState<number | null>(null)
   const [showPasswordModal, setShowPasswordModal] = useState(false)
 
-  // Fetch des données avec SWR (auto-refresh toutes les 5min)
+  // Fetch des données pistes
   const { data, error, isLoading, mutate } = useSWR<SlopesApiResponse>(
     `/api/slopes?resort=${selectedResort}&limit=10`,
     fetcher,
@@ -89,6 +103,22 @@ export default function DashboardPage() {
       revalidateOnFocus: true,
     }
   )
+
+  // Fetch des données météo
+  const {
+    data: weatherResponse,
+    error: weatherError,
+    isLoading: weatherIsLoading
+  } = useSWR<{ success: boolean; data: WeatherData }>(
+    `/api/weather?resort=${selectedResort}`,
+    fetcher,
+    {
+      refreshInterval: 1800000, // 30 minutes
+      revalidateOnFocus: false, // Météo change pas souvent
+    }
+  )
+
+  const weatherData = weatherResponse?.data
 
   // Détermine quelle donnée afficher
   const displayedData = selectedDataId === null
@@ -164,6 +194,7 @@ export default function DashboardPage() {
         <main id="main-content" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8" aria-busy="true">
           <div className="space-y-8">
             <SummarySkeleton />
+            <WeatherSkeleton />
             <div>
               <div className="h-8 w-48 bg-gray-200 rounded mb-6 animate-pulse" />
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -289,17 +320,24 @@ export default function DashboardPage() {
             </div>
           </section>
 
-          {/* Section meteo (placeholder) */}
-          <section aria-labelledby="weather-heading" className="bg-white rounded-2xl p-8 border-2 border-dashed border-gray-300">
-            <div className="text-center">
-              <CloudSun className="w-16 h-16 text-gray-400 mx-auto mb-4" aria-hidden="true" />
-              <h3 id="weather-heading" className="text-xl font-semibold text-gray-700 mb-2">
-                Meteo
-              </h3>
-              <p className="text-gray-500">
-                Section meteo a venir prochainement
-              </p>
-            </div>
+          {/* Section meteo */}
+          <section aria-labelledby="weather-heading">
+            <h2 id="weather-heading" className="sr-only">Meteo et Neige</h2>
+            {weatherIsLoading ? (
+              <WeatherSkeleton />
+            ) : weatherData ? (
+              <WeatherCard forecast={weatherData.forecast} />
+            ) : (
+              <div className="bg-white rounded-2xl p-8 border-2 border-dashed border-gray-300 text-center">
+                <CloudSun className="w-16 h-16 text-gray-400 mx-auto mb-4" aria-hidden="true" />
+                <h3 className="text-xl font-semibold text-gray-700 mb-2">
+                  Météo indisponible
+                </h3>
+                <p className="text-gray-500">
+                  Impossible de charger les prévisions météo pour le moment.
+                </p>
+              </div>
+            )}
           </section>
         </div>
       </main>

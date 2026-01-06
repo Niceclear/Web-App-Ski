@@ -41,6 +41,42 @@ export const slopesData = pgTable('slopes_data', {
   createdAt: timestamp('created_at').defaultNow().notNull(),
 })
 
+// Données météo
+export const weatherData = pgTable('weather_data', {
+  id: serial('id').primaryKey(),
+  resortId: integer('resort_id').notNull().references(() => skiResorts.id),
+
+  scrapedAt: timestamp('scraped_at').defaultNow().notNull(),
+
+  // Prévisions météo (tableau de jours)
+  forecast: jsonb('forecast').$type<Array<{
+    datetime: string
+    base: {
+      temp: { min: number; max: number }
+      wind: { speed: number; direction: number; gusts: number }
+      snow: { snowfall: number; probability: number; density: number | null; snowline: number | null }
+      type: string
+    }
+    mid: {
+      temp: { min: number; max: number }
+      wind: { speed: number; direction: number; gusts: number }
+      snow: { snowfall: number; probability: number; density: number | null; snowline: number | null }
+      type: string
+    }
+    summit: {
+      temp: { min: number; max: number }
+      wind: { speed: number; direction: number; gusts: number }
+      snow: { snowfall: number; probability: number; density: number | null; snowline: number | null }
+      type: string
+    }
+  }>>(),
+
+  success: boolean('success').notNull().default(true),
+  errorMessage: text('error_message'),
+
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+})
+
 // Détails individuels des pistes
 export const slopes = pgTable('slopes', {
   id: serial('id').primaryKey(),

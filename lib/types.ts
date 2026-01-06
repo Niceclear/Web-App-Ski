@@ -50,3 +50,26 @@ export interface SlopesApiResponse {
   historicalData: SlopesData[]
   slopes: Slope[]
 }
+
+// Types météo
+export type WeatherElevation = 'base' | 'mid' | 'summit'
+
+export interface WeatherCondition {
+  temp: { min: number; max: number }
+  wind: { speed: number; direction: number; gusts: number }
+  snow: { snowfall: number; probability: number; density: number | null; snowline: number | null }
+  type: string // 'OVERCAS', 'SNOW', 'SLEET', 'SNOW_SHOWERS', 'CLEAR', etc.
+}
+
+export interface WeatherDay {
+  datetime: string // 'YYYY-MM-DD'
+  base: WeatherCondition
+  mid: WeatherCondition
+  summit: WeatherCondition
+}
+
+export interface WeatherData {
+  resortName: string
+  scrapedAt: string
+  forecast: WeatherDay[]
+}

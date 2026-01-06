@@ -15,17 +15,61 @@ interface ScrapedData {
   rawData: Record<string, unknown>
 }
 
+// Pool de User-Agents pour rotation (éviter la détection)
+const USER_AGENTS = [
+  'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+  'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+  'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0',
+  'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Safari/605.1.15',
+  'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+  'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36 Edg/119.0.0.0',
+  'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36',
+  'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:120.0) Gecko/20100101 Firefox/120.0',
+  'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:121.0) Gecko/20100101 Firefox/121.0',
+  'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
+]
+
+// Sélectionne un User-Agent aléatoire
+function getRandomUserAgent(): string {
+  return USER_AGENTS[Math.floor(Math.random() * USER_AGENTS.length)]
+}
+
+// Génère un délai aléatoire entre 0 et maxMs millisecondes
+function getRandomDelay(maxMs: number): number {
+  return Math.floor(Math.random() * maxMs)
+}
+
+// Attendre un délai aléatoire
+async function randomDelay(maxMs: number): Promise<void> {
+  const delay = getRandomDelay(maxMs)
+  console.log(`[Valmeinier Simple Scraper] Random delay: ${delay}ms (${(delay / 1000).toFixed(1)}s)`)
+  await new Promise(resolve => setTimeout(resolve, delay))
+}
+
 export async function scrapeValmeinierSimple(): Promise<ScrapedData | null> {
   const url = 'https://www.valmeinier.com/enneigement/'
 
   console.log(`[Valmeinier Simple Scraper] Starting scrape at ${new Date().toISOString()}`)
 
   try {
+    // Délai aléatoire entre 0 et 300 secondes (5 minutes)
+    await randomDelay(300000)
+
+    // Sélectionner un User-Agent aléatoire
+    const userAgent = getRandomUserAgent()
+    console.log(`[Valmeinier Simple Scraper] Using User-Agent: ${userAgent.substring(0, 50)}...`)
+
     // Fetch the HTML
     console.log(`[Valmeinier Simple Scraper] Fetching ${url}`)
     const response = await fetch(url, {
       headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+        'User-Agent': userAgent,
+        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+        'Accept-Language': 'fr-FR,fr;q=0.9,en-US;q=0.8,en;q=0.7',
+        'Accept-Encoding': 'gzip, deflate, br',
+        'DNT': '1',
+        'Connection': 'keep-alive',
+        'Upgrade-Insecure-Requests': '1',
       }
     })
 

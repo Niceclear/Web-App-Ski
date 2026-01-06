@@ -51,13 +51,52 @@ git --version
 4. Cliquez sur **Reset password** pour l'utilisateur `neondb_owner`
 5. **COPIEZ** la nouvelle connection string qui s'affiche
 
-#### b) Mettre à jour localement (optionnel si vous voulez tester)
+#### b) Créer le schéma de la base de données
+
+**Option 1 : Via Drizzle Push (RECOMMANDÉ)**
 
 ```bash
-# Mettre à jour .env.local avec la NOUVELLE connection string
-# NE PAS COMMITER CE FICHIER
-echo "DATABASE_URL=postgresql://neondb_owner:NEW_PASSWORD@..." > .env.local
+# Depuis votre machine locale, avec la connection string de production
+DATABASE_URL="postgresql://neondb_owner:NEW_PASSWORD@..." npm run db:push
+
+# Ou utilisez le script fourni
+DATABASE_URL="postgresql://neondb_owner:NEW_PASSWORD@..." ./scripts/init-db-prod.sh
 ```
+
+**Ce que ça fait :**
+- ✅ Crée les tables `ski_resorts`, `slopes`, `slopes_data`
+- ✅ Crée les index et contraintes (foreign keys)
+- ✅ Pas de migration à gérer, c'est automatique
+
+**Option 2 : Via SQL direct dans Neon Console**
+
+Si `db:push` ne fonctionne pas :
+
+1. Allez dans **Neon Console** → **SQL Editor**
+2. Copiez le contenu du fichier [drizzle/0000_medical_living_mummy.sql](drizzle/0000_medical_living_mummy.sql)
+3. Exécutez le SQL
+4. Vérifiez que les 3 tables sont créées
+
+#### c) (Optionnel) Insérer la station Valmeinier
+
+**Option 1 : Laisser le cron le faire automatiquement**
+- Les crons Vercel vont automatiquement créer la station lors du premier scraping
+- Pas besoin de faire quoi que ce soit
+
+**Option 2 : Insertion manuelle (si vous voulez tester avant le premier cron)**
+
+Via SQL Editor dans Neon Console :
+```sql
+INSERT INTO ski_resorts (name, location, url, description)
+VALUES (
+  'Valmeinier',
+  'Savoie, France',
+  'https://www.valmeinier.com/ski/etat-du-domaine/infos-et-plans-des-pistes',
+  'Station de ski familiale dans les Alpes, altitude 1500-2600m'
+);
+```
+
+Ou utilisez le fichier fourni : [scripts/seed-valmeinier.sql](scripts/seed-valmeinier.sql)
 
 ---
 

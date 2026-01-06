@@ -58,6 +58,9 @@ export const metadata: Metadata = {
     icon: '/favicon.ico',
     apple: '/apple-icon.png',
   },
+  other: {
+    'og:logo': 'https://web-app-ski.vercel.app/logo.jpg',
+  },
 }
 
 export const viewport: Viewport = {

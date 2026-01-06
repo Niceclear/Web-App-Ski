@@ -34,10 +34,11 @@ export const metadata: Metadata = {
     description: 'Consultez en temps reel l\'etat des pistes de ski a Valmeinier. Verifiez les pistes ouvertes et les conditions d\'enneigement.',
     images: [
       {
-        url: '/banniere.jpg',
-        width: 1600,
-        height: 1065,
+        url: 'https://web-app-ski.vercel.app/banniere.jpg',
+        width: 1200,
+        height: 630,
         alt: 'Suivi des Pistes de Ski - Valmeinier',
+        type: 'image/jpeg',
       },
     ],
   },
@@ -45,21 +46,11 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Suivi des Pistes de Ski - Valmeinier',
     description: 'Consultez en temps reel l\'etat des pistes de ski a Valmeinier.',
-    images: [
-      {
-        url: '/banniere.jpg',
-        width: 1600,
-        height: 1065,
-        alt: 'Suivi des Pistes de Ski - Valmeinier',
-      },
-    ],
+    images: ['https://web-app-ski.vercel.app/banniere.jpg'],
   },
   icons: {
     icon: '/favicon.ico',
     apple: '/apple-icon.png',
-  },
-  other: {
-    'og:logo': 'https://web-app-ski.vercel.app/logo.jpg',
   },
 }
 

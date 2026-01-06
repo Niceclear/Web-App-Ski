@@ -11,6 +11,10 @@
     {
       "path": "/api/scrape",
       "schedule": "0 12 * * *"
+    },
+    {
+      "path": "/api/scrape/weather",
+      "schedule": "30 0 * * *"
     }
   ],
   "headers": [
@@ -63,5 +67,7 @@
       "destination": "/api/health"
     }
   ],
-  "regions": ["cdg1"]
+  "regions": [
+    "cdg1"
+  ]
 }

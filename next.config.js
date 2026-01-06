@@ -8,7 +8,7 @@ const ContentSecurityPolicy = `
   style-src 'self' 'unsafe-inline';
   img-src 'self' data: https:;
   font-src 'self' data:;
-  connect-src 'self' https://ep-holy-term-agpsc411-pooler.c-2.eu-central-1.aws.neon.tech wss://ep-holy-term-agpsc411-pooler.c-2.eu-central-1.aws.neon.tech;
+  connect-src 'self';
   frame-ancestors 'none';
   base-uri 'self';
   form-action 'self';

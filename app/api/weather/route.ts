@@ -2,6 +2,9 @@ import { NextRequest } from 'next/server'
 import { getLatestWeatherData, runWeatherScraper } from '../../../lib/scrapers/weather-skiinfo'
 import { successResponse, errorResponse, handleApiError, ErrorCodes } from '../../../lib/api-response'
 import { WeatherData } from '../../../lib/types'
+import { db } from '../../../lib/db'
+import { skiResorts } from '../../../lib/schema'
+import { eq } from 'drizzle-orm'
 
 export const dynamic = 'force-dynamic'
 export const revalidate = 0 // On désactive le cache Next.js car on lit la BDD
@@ -11,18 +14,21 @@ export async function GET(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams
     const resort = searchParams.get('resort') || 'valmeinier'
 
-    // Valider le resort (pour l'instant on supporte que valmeinier)
-    const validResorts = ['valmeinier', 'valloire']
-    if (!validResorts.includes(resort.toLowerCase())) {
+    // Récupérer la station depuis la BDD
+    const resortResult = await db
+      .select({ id: skiResorts.id, name: skiResorts.name })
+      .from(skiResorts)
+      .where(eq(skiResorts.name, resort.charAt(0).toUpperCase() + resort.slice(1).toLowerCase()))
+      .limit(1)
+
+    if (resortResult.length === 0) {
       return errorResponse(
         ErrorCodes.BAD_REQUEST,
-        `Station non supportée. Stations disponibles: ${validResorts.join(', ')}`
+        `Station "${resort}" non trouvée`
       )
     }
 
-    // Récupérer l'ID de la station (temporaire: on assume ID 1 pour Valmeinier car créé par le scraper)
-    // Idéalement on chercherait l'ID via le nom dans la BDD
-    const resortId = 1
+    const resortId = resortResult[0].id
 
     // 1. Tenter de récupérer les données en base
     console.log(`[Weather API] Fetching data for resort ${resortId}`)
@@ -46,10 +52,8 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    // Pour Valloire, on change juste le nom d'affichage
-    if (resort.toLowerCase() === 'valloire') {
-      weatherData.resortName = 'Valloire'
-    }
+    // Utiliser le nom de la station depuis la BDD
+    weatherData.resortName = resortResult[0].name
 
     return successResponse<WeatherData>(weatherData, 200, {
       headers: {

@@ -34,7 +34,7 @@ export const metadata: Metadata = {
     description: 'Consultez en temps reel l\'etat des pistes de ski a Valmeinier. Verifiez les pistes ouvertes et les conditions d\'enneigement.',
     images: [
       {
-        url: '/og-image.jpg',
+        url: '/banniere.jpg',
         width: 1200,
         height: 630,
         alt: 'Suivi des Pistes de Ski - Valmeinier',
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Suivi des Pistes de Ski - Valmeinier',
     description: 'Consultez en temps reel l\'etat des pistes de ski a Valmeinier.',
-    images: ['/og-image.jpg'],
+    images: ['/banniere.jpg'],
   },
   icons: {
     icon: '/favicon.ico',

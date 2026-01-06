@@ -114,8 +114,8 @@ export default function DashboardPage() {
     `/api/weather?resort=${selectedResort}`,
     fetcher,
     {
-      refreshInterval: 1800000, // 30 minutes
-      revalidateOnFocus: false, // Météo change pas souvent
+      refreshInterval: 300000, // 5 minutes
+      revalidateOnFocus: true,
     }
   )
 

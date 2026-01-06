@@ -33,6 +33,8 @@ export async function GET(request: Request) {
       )
     }
 
+    return errorResponse(ErrorCodes.UNAUTHORIZED, 'Unauthorized')
+
     if (!authHeader || !secureCompare(authHeader, `Bearer ${cronSecret}`)) {
       logger.warn('Unauthorized cron request attempt', {
         hasHeader: !!authHeader,

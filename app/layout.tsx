@@ -35,8 +35,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: '/banniere.jpg',
-        width: 1200,
-        height: 630,
+        width: 1600,
+        height: 1065,
         alt: 'Suivi des Pistes de Ski - Valmeinier',
       },
     ],
@@ -45,7 +45,14 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Suivi des Pistes de Ski - Valmeinier',
     description: 'Consultez en temps reel l\'etat des pistes de ski a Valmeinier.',
-    images: ['/banniere.jpg'],
+    images: [
+      {
+        url: '/banniere.jpg',
+        width: 1600,
+        height: 1065,
+        alt: 'Suivi des Pistes de Ski - Valmeinier',
+      },
+    ],
   },
   icons: {
     icon: '/favicon.ico',

@@ -89,6 +89,7 @@ export default function PasswordModal({ isOpen, onClose, onSubmit }: PasswordMod
           {easterEgg ? (
             <div className="space-y-6 animate-fade-in">
               <div className="relative group overflow-hidden rounded-xl border-4 border-blue-100 shadow-lg">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={easterEgg}
                   alt="Easter Egg Yeti"
@@ -96,7 +97,7 @@ export default function PasswordModal({ isOpen, onClose, onSubmit }: PasswordMod
                 />
                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent p-4">
                   <p className="text-white text-center font-bold text-lg italic">
-                    "Bravo mon pote ! Tu m'as trouvé !"
+                    &quot;Bravo mon pote ! Tu m&apos;as trouvé !&quot;
                   </p>
                 </div>
               </div>

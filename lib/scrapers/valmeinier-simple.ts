@@ -65,6 +65,7 @@ export async function scrapeValmeinierSimple(): Promise<ScrapedData | null> {
     })
 
     if (!response.ok) {
+      console.error(response.text())
       throw new Error(`HTTP error! status: ${response.status}`)
     }
 

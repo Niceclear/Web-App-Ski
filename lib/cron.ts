@@ -75,10 +75,11 @@ export async function manualScrape() {
     if (lastScrape.length > 0) {
       const lastScrapeTime = new Date(lastScrape[0].scrapedAt).getTime()
       const now = Date.now()
-      const hourInMs = 60 * 60 * 1000 // 1 heure en millisecondes
+      const cooldownMinutes = parseInt(process.env.SCRAPE_COOLDOWN_MINUTES || '5', 10)
+      const cooldownMs = cooldownMinutes * 60 * 1000
 
-      if (now - lastScrapeTime < hourInMs) {
-        const minutesLeft = Math.ceil((hourInMs - (now - lastScrapeTime)) / (60 * 1000))
+      if (now - lastScrapeTime < cooldownMs) {
+        const minutesLeft = Math.ceil((cooldownMs - (now - lastScrapeTime)) / (60 * 1000))
         throw new Error(`Veuillez attendre ${minutesLeft} minute(s) avant le prochain scraping`)
       }
     }

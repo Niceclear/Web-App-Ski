@@ -142,8 +142,11 @@ export default function DashboardPage() {
     })
 
     if (!response.ok) {
-      const error = await response.json()
-      throw new Error(error.error || 'Mot de passe incorrect')
+      const errorData = await response.json()
+      const errorMessage = typeof errorData.error === 'string'
+        ? errorData.error
+        : (errorData.error?.message || JSON.stringify(errorData.error) || 'Erreur inconnue')
+      throw new Error(errorMessage)
     }
 
     // Délai de 2 secondes pour laisser le temps à la BDD de sauvegarder

@@ -13,18 +13,26 @@ export default function PasswordModal({ isOpen, onClose, onSubmit }: PasswordMod
   const [password, setPassword] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
+  const [success, setSuccess] = useState(false)
 
   if (!isOpen) return null
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
+    setSuccess(false)
     setIsLoading(true)
 
     try {
       await onSubmit(password)
+      setSuccess(true)
       setPassword('')
-      onClose()
+
+      // Afficher le message de succès pendant 2 secondes avant de fermer
+      setTimeout(() => {
+        setSuccess(false)
+        onClose()
+      }, 2000)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Mot de passe incorrect')
     } finally {
@@ -94,9 +102,20 @@ export default function PasswordModal({ isOpen, onClose, onSubmit }: PasswordMod
                 </div>
               )}
 
-              <div className="text-sm text-gray-600">
-                <p>Cette action va lancer un scraping manuel des données de Valmeinier.</p>
-              </div>
+              {success && (
+                <div className="flex items-center gap-2 p-3 bg-green-50 border-2 border-green-200 rounded-lg">
+                  <svg className="w-5 h-5 text-green-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  <p className="text-sm text-green-600 font-medium">Scraping terminé avec succès ! Rafraîchissement...</p>
+                </div>
+              )}
+
+              {!success && (
+                <div className="text-sm text-gray-600">
+                  <p>Cette action va lancer un scraping manuel des données de Valmeinier.</p>
+                </div>
+              )}
             </div>
 
             {/* Footer */}

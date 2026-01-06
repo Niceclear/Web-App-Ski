@@ -10,7 +10,7 @@ interface SlopeCardProps {
 const difficultyConfig = {
   green: {
     label: 'Vertes',
-    fullLabel: 'Pistes vertes (debutant)',
+    fullLabel: 'Pistes vertes (débutant)',
     bgColor: 'bg-green-100',
     textColor: 'text-green-800',
     borderColor: 'border-green-300',
@@ -20,7 +20,7 @@ const difficultyConfig = {
   },
   blue: {
     label: 'Bleues',
-    fullLabel: 'Pistes bleues (intermediaire)',
+    fullLabel: 'Pistes bleues (intermédiaire)',
     bgColor: 'bg-blue-100',
     textColor: 'text-blue-800',
     borderColor: 'border-blue-300',
@@ -29,7 +29,7 @@ const difficultyConfig = {
   },
   red: {
     label: 'Rouges',
-    fullLabel: 'Pistes rouges (avance)',
+    fullLabel: 'Pistes rouges (avancé)',
     bgColor: 'bg-red-100',
     textColor: 'text-red-800',
     borderColor: 'border-red-300',
@@ -111,7 +111,7 @@ export default function SlopeCard({ difficulty, data }: SlopeCardProps) {
           id={`slope-desc-${difficulty}`}
           className={`text-sm ${config.textColor} opacity-75 mt-2`}
         >
-          {closedCount} fermee{closedCount > 1 ? 's' : ''}
+          {closedCount} fermée{closedCount > 1 ? 's' : ''}
         </p>
       </div>
     </article>

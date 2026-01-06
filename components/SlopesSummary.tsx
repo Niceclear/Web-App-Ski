@@ -12,8 +12,8 @@ function getSkiConditionStatus(percentage: number) {
   if (percentage === 0) {
     return {
       status: 'closed',
-      label: 'Domaine Ferme',
-      ariaLabel: 'Attention: le domaine skiable est actuellement ferme',
+      label: 'Domaine Fermé',
+      ariaLabel: 'Attention : le domaine skiable est actuellement fermé',
       gradient: 'from-gray-700 to-gray-900',
       textColor: 'text-gray-300',
       icon: XCircle,
@@ -25,14 +25,14 @@ function getSkiConditionStatus(percentage: number) {
   } else if (percentage < 25) {
     return {
       status: 'critical',
-      label: 'Ouverture Limitee',
-      ariaLabel: 'Attention: ouverture tres limitee avec moins de 25 pourcent des pistes',
+      label: 'Ouverture Limitée',
+      ariaLabel: 'Attention : ouverture très limitée avec moins de 25 pourcent des pistes',
       gradient: 'from-red-600 to-red-800',
       textColor: 'text-red-100',
       icon: AlertTriangle,
       iconColor: 'text-yellow-300',
       progressColor: 'bg-gradient-to-r from-red-400 to-red-500',
-      message: 'Tres peu de pistes disponibles',
+      message: 'Très peu de pistes disponibles',
       animate: 'animate-bounce-once'
     }
   } else if (percentage < 50) {
@@ -45,7 +45,7 @@ function getSkiConditionStatus(percentage: number) {
       icon: TrendingDown,
       iconColor: 'text-orange-300',
       progressColor: 'bg-gradient-to-r from-orange-400 to-orange-500',
-      message: 'Moins de la moitie des pistes ouvertes',
+      message: 'Moins de la moitié des pistes ouvertes',
       animate: ''
     }
   } else if (percentage < 75) {
@@ -65,7 +65,7 @@ function getSkiConditionStatus(percentage: number) {
     return {
       status: 'excellent',
       label: 'Excellent Enneigement',
-      ariaLabel: 'Excellentes conditions avec plus de 75 pourcent des pistes ouvertes',
+      ariaLabel: 'Excellentes conditions avec plus de 75 pour cent des pistes ouvertes',
       gradient: 'from-green-600 to-green-800',
       textColor: 'text-green-100',
       icon: Snowflake,

@@ -22,7 +22,7 @@ function SummarySkeleton() {
     <div
       className="bg-gradient-to-br from-gray-300 to-gray-400 rounded-2xl p-8 animate-pulse"
       role="status"
-      aria-label="Chargement du resume des pistes"
+      aria-label="Chargement du résumé des pistes"
     >
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
@@ -54,7 +54,7 @@ function SlopeCardSkeleton() {
     <div
       className="bg-gray-200 rounded-xl p-6 animate-pulse"
       role="status"
-      aria-label="Chargement des donnees de piste"
+      aria-label="Chargement des données de piste"
     >
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-3">
@@ -149,9 +149,6 @@ export default function DashboardPage() {
       throw new Error(errorMessage)
     }
 
-    // Délai de 2 secondes pour laisser le temps à la BDD de sauvegarder
-    await new Promise(resolve => setTimeout(resolve, 2000))
-
     // Rafraîchir les données après le scraping
     mutate()
   }
@@ -164,13 +161,13 @@ export default function DashboardPage() {
             <AlertTriangle className="w-8 h-8 text-red-600" aria-hidden="true" />
           </div>
           <h2 className="text-2xl font-bold text-red-600 mb-2">Erreur de chargement</h2>
-          <p className="text-gray-600 mb-4">Impossible de charger les donnees des pistes. Veuillez verifier votre connexion internet et reessayer.</p>
+          <p className="text-gray-600 mb-4">Impossible de charger les données des pistes. Veuillez vérifier votre connexion internet et réessayer.</p>
           <button
             onClick={() => mutate()}
             className="inline-flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
           >
             <RefreshCw className="w-4 h-4" aria-hidden="true" />
-            Reessayer
+            Réessayer
           </button>
         </div>
       </div>
@@ -211,7 +208,7 @@ export default function DashboardPage() {
             </div>
           </div>
           <div className="sr-only" role="status" aria-live="polite">
-            Chargement des donnees des pistes en cours...
+            Chargement des données des pistes en cours...
           </div>
         </main>
       </div>
@@ -225,14 +222,14 @@ export default function DashboardPage() {
           <div className="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
             <CloudSun className="w-8 h-8 text-gray-400" aria-hidden="true" />
           </div>
-          <h2 className="text-2xl font-bold text-gray-800 mb-2">Aucune donnee disponible</h2>
-          <p className="text-gray-600 mb-4">Les donnees des pistes n&apos;ont pas encore ete recuperees. Lancez une actualisation pour obtenir les dernieres informations.</p>
+          <h2 className="text-2xl font-bold text-gray-800 mb-2">Aucune donnée disponible</h2>
+          <p className="text-gray-600 mb-4">Les données des pistes n&apos;ont pas encore été récupérées. Lancez une actualisation pour obtenir les dernières informations.</p>
           <button
             onClick={() => setShowPasswordModal(true)}
             className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
           >
             <RefreshCw className="w-4 h-4" aria-hidden="true" />
-            Actualiser les donnees
+            Actualiser les données
           </button>
         </div>
       </div>
@@ -250,9 +247,9 @@ export default function DashboardPage() {
                 Dashboard Ski
               </h1>
               <p className="text-sm text-gray-600 mt-1">
-                <span className="sr-only">Derniere mise a jour : </span>
+                <span className="sr-only">Dernière mise à jour : </span>
                 <time dateTime={displayedData.scrapedAt}>
-                  Derniere mise a jour: {format(new Date(displayedData.scrapedAt), "d MMMM yyyy 'a' HH:mm", { locale: fr })}
+                  Dernière mise à jour : {format(new Date(displayedData.scrapedAt), "d MMMM yyyy 'à' HH:mm", { locale: fr })}
                 </time>
               </p>
             </div>
@@ -278,7 +275,7 @@ export default function DashboardPage() {
               <button
                 onClick={() => setShowPasswordModal(true)}
                 className="flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors w-full sm:w-auto focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-                aria-label="Actualiser les donnees des pistes"
+                aria-label="Actualiser les données des pistes"
               >
                 <RefreshCw className="w-4 h-4" aria-hidden="true" />
                 <span>Actualiser</span>
@@ -291,18 +288,18 @@ export default function DashboardPage() {
       {/* Main Content */}
       <main id="main-content" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8" role="main">
         <div className="space-y-8">
-          {/* Summary global */}
+          {/* Résumé global */}
           <section aria-labelledby="summary-heading">
-            <h2 id="summary-heading" className="sr-only">Resume de l&apos;etat des pistes</h2>
+            <h2 id="summary-heading" className="sr-only">Résumé de l&apos;état des pistes</h2>
             <SlopesSummary data={displayedData} />
           </section>
 
-          {/* Details par difficulte */}
+          {/* Détails par difficulté */}
           <section aria-labelledby="difficulty-heading">
             <h2 id="difficulty-heading" className="text-2xl font-bold text-gray-900 mb-6">
-              Detail par Difficulte
+              Détail par Difficulté
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" role="list" aria-label="Liste des pistes par difficulte">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" role="list" aria-label="Liste des pistes par difficulté">
               {displayedData.greenSlopes && (
                 <div role="listitem">
                   <SlopeCard difficulty="green" data={displayedData.greenSlopes} />
@@ -326,9 +323,9 @@ export default function DashboardPage() {
             </div>
           </section>
 
-          {/* Section meteo */}
+          {/* Section météo */}
           <section aria-labelledby="weather-heading">
-            <h2 id="weather-heading" className="sr-only">Meteo et Neige</h2>
+            <h2 id="weather-heading" className="sr-only">Météo et Neige</h2>
             {weatherIsLoading ? (
               <WeatherSkeleton />
             ) : weatherData ? (
@@ -352,7 +349,7 @@ export default function DashboardPage() {
       <footer className="mt-12 py-6 border-t border-gray-200 bg-white" role="contentinfo">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <p className="text-center text-sm text-gray-600">
-            Donnees mises a jour automatiquement a 7h et 12h
+            Données mises à jour automatiquement à 7h et 12h
           </p>
         </div>
       </footer>

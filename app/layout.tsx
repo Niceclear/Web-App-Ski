@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     default: 'Suivi des Pistes de Ski - Valmeinier',
     template: '%s | Suivi des Pistes de Ski',
   },
-  description: 'Consultez en temps reel l\'etat des pistes de ski a Valmeinier. Verifiez les pistes ouvertes, fermees et les conditions d\'enneigement avant votre journee de ski.',
+  description: 'Consultez en temps réel l\'état des pistes de ski à Valmeinier. Vérifiez les pistes ouvertes, fermées et les conditions d\'enneigement avant votre journée de ski.',
   keywords: ['ski', 'pistes', 'Valmeinier', 'neige', 'station de ski', 'Savoie', 'conditions ski', 'enneigement'],
   authors: [{ name: 'Web App Ski' }],
   creator: 'Web App Ski',
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     url: 'https://web-app-ski.vercel.app',
     siteName: 'Suivi des Pistes de Ski',
     title: 'Suivi des Pistes de Ski - Valmeinier',
-    description: 'Consultez en temps reel l\'etat des pistes de ski a Valmeinier. Verifiez les pistes ouvertes et les conditions d\'enneigement.',
+    description: 'Consultez en temps réel l\'état des pistes de ski à Valmeinier. Vérifiez les pistes ouvertes et les conditions d\'enneigement.',
     images: [
       {
         url: 'https://web-app-ski.vercel.app/banniere.jpg',
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Suivi des Pistes de Ski - Valmeinier',
-    description: 'Consultez en temps reel l\'etat des pistes de ski a Valmeinier.',
+    description: 'Consultez en temps réel l\'état des pistes de ski à Valmeinier.',
     images: ['https://web-app-ski.vercel.app/banniere.jpg'],
   },
   icons: {

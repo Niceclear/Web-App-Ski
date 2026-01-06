@@ -53,7 +53,7 @@ export async function scrapeValmeinierSimple(): Promise<ScrapedData | null> {
 
   try {
     // Délai aléatoire entre 0 et 300 secondes (5 minutes)
-    await randomDelay(300000)
+    // await randomDelay(300000)
 
     // Sélectionner un User-Agent aléatoire
     const userAgent = getRandomUserAgent()

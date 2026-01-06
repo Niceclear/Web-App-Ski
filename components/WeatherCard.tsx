@@ -11,10 +11,24 @@ interface WeatherCardProps {
 
 function getWeatherIcon(type: string, size = "w-12 h-12") {
   const t = type.toLowerCase()
-  if (t.includes('neige') || t.includes('snow')) return <Snowflake className={`${size} text-blue-400`} />
-  if (t.includes('pluie') || t.includes('rain')) return <Cloud className={`${size} text-gray-500`} />
-  if (t.includes('nuage') || t.includes('cloud')) return <CloudSun className={`${size} text-gray-400`} />
-  if (t.includes('soleil') || t.includes('sun') || t.includes('ensoleillé')) return <Sun className={`${size} text-yellow-500`} />
+  console.log(t)
+
+  // Snow conditions
+  if (t.includes('snow') || t.includes('neige')) return <Snowflake className={`${size} text-blue-400`} />
+
+  // Rain/Sleet conditions
+  if (t.includes('sleet') || t.includes('rain') || t.includes('pluie') || t.includes('showers'))
+    return <Cloud className={`${size} text-gray-500`} />
+
+  // Cloudy conditions
+  if (t.includes('overcast') || t.includes('cloudy') || t.includes('nuage') || t.includes('cloud'))
+    return <CloudSun className={`${size} text-gray-400`} />
+
+  // Sunny/Clear conditions
+  if (t.includes('clear') || t.includes('sunny') || t.includes('soleil') || t.includes('sun') || t.includes('ensoleillé'))
+    return <Sun className={`${size} text-yellow-500`} />
+
+  // Default fallback
   return <Cloud className={`${size} text-gray-400`} />
 }
 
@@ -82,10 +96,17 @@ export default function WeatherCard({ forecast }: WeatherCardProps) {
               const date = parseISO(day.datetime)
               const today = new Date()
               const tomorrow = addDays(today, 1)
-              let dateLabel = format(date, 'd MMM', { locale: fr })
+              let dateLabel = ''
 
-              if (isSameDay(date, today)) dateLabel = "Auj."
-              else if (isSameDay(date, tomorrow)) dateLabel = "Demain"
+              if (isSameDay(date, today)) {
+                dateLabel = "Auj."
+              } else if (isSameDay(date, tomorrow)) {
+                dateLabel = "Demain"
+              } else {
+                // Format: "Lun. 8 Jan"
+                dateLabel = format(date, 'EEE d MMM', { locale: fr })
+                  .replace('.', '') // Remove period from abbreviated day
+              }
 
               return (
                 <tr key={day.datetime} className="group hover:bg-gray-50/50 transition-colors">

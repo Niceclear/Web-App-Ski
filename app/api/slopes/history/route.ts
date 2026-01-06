@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
-import { db } from '@/lib/db'
-import { slopesData, skiResorts } from '@/lib/schema'
+import { db } from '../../../../lib/db'
+import { slopesData, skiResorts } from '../../../../lib/schema'
 import { and, desc, eq, gte } from 'drizzle-orm'
 
 // Force dynamic rendering for this route (uses request.url)

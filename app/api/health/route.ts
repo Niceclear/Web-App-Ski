@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
-import { db } from '@/lib/db'
-import { skiResorts } from '@/lib/schema'
+import { db } from '../../../lib/db'
+import { skiResorts } from '../../../lib/schema'
 import { sql } from 'drizzle-orm'
 
 // Health check response type

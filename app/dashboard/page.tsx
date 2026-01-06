@@ -13,6 +13,8 @@ import { RefreshCw, CloudSun, AlertTriangle } from 'lucide-react'
 import { format } from 'date-fns'
 import { fr } from 'date-fns/locale'
 
+console.log("LOG_SYSTEM - NODE_ENV actuel :", process.env.NODE_ENV);
+
 const fetcher = (url: string) => fetch(url).then((res) => res.json())
 
 // Skeleton loader pour le summary

@@ -75,8 +75,8 @@ export async function scrapeValmeinierSimple(): Promise<ScrapedData | null> {
 
       // Get response body for more context
       const errorBody = await response.text()
-      console.error(`[Valmeinier Simple Scraper] Response Body (first 500 chars):`)
-      console.error(errorBody.substring(0, 500))
+      console.error(`[Valmeinier Simple Scraper] Response Body:`)
+      console.error(errorBody)
 
       throw new Error(`HTTP error! status: ${response.status} - ${response.statusText}`)
     }

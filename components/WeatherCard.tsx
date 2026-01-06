@@ -14,7 +14,8 @@ function getWeatherIcon(type: string, size = "w-12 h-12") {
   if (t.includes('neige') || t.includes('snow')) return <Snowflake className={`${size} text-blue-400`} />
   if (t.includes('pluie') || t.includes('rain')) return <Cloud className={`${size} text-gray-500`} />
   if (t.includes('nuage') || t.includes('cloud')) return <CloudSun className={`${size} text-gray-400`} />
-  return <Sun className={`${size} text-yellow-500`} />
+  if (t.includes('soleil') || t.includes('sun') || t.includes('ensoleillé')) return <Sun className={`${size} text-yellow-500`} />
+  return <Cloud className={`${size} text-gray-400`} />
 }
 
 export default function WeatherCard({ forecast }: WeatherCardProps) {
@@ -127,6 +128,22 @@ export default function WeatherCard({ forecast }: WeatherCardProps) {
             })}
           </tbody>
         </table>
+      </div>
+
+      {/* Snow Total Footer */}
+      <div className="mt-4 pt-4 border-t border-gray-100">
+        <div className="flex items-center justify-between px-2">
+          <div className="flex items-center gap-2">
+            <Snowflake className="w-5 h-5 text-blue-400" />
+            <span className="text-sm font-medium text-gray-600">Cumul de neige</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-2xl font-bold text-blue-600">
+              {upcomingWeather.reduce((sum, day) => sum + (day[selectedLayer]?.snow?.snowfall || 0), 0).toFixed(2)}
+            </span>
+            <span className="text-sm text-gray-500">cm</span>
+          </div>
+        </div>
       </div>
     </div>
   )

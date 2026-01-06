@@ -65,8 +65,20 @@ export async function scrapeValmeinierSimple(): Promise<ScrapedData | null> {
     })
 
     if (!response.ok) {
-      console.error(response.text())
-      throw new Error(`HTTP error! status: ${response.status}`)
+      // Log detailed debug info
+      console.error(`[Valmeinier Simple Scraper] HTTP Error: ${response.status} ${response.statusText}`)
+      console.error(`[Valmeinier Simple Scraper] Response URL: ${response.url}`)
+      console.error(`[Valmeinier Simple Scraper] Response Headers:`)
+      response.headers.forEach((value, key) => {
+        console.error(`  ${key}: ${value}`)
+      })
+
+      // Get response body for more context
+      const errorBody = await response.text()
+      console.error(`[Valmeinier Simple Scraper] Response Body (first 500 chars):`)
+      console.error(errorBody.substring(0, 500))
+
+      throw new Error(`HTTP error! status: ${response.status} - ${response.statusText}`)
     }
 
     const html = await response.text()

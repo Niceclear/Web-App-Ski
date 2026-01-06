@@ -1,12 +1,12 @@
 import { NextResponse } from 'next/server'
-import { manualScrape } from '../../../lib/cron'
-import { logger } from '../../../lib/logger'
+import { manualScrape } from '@/lib/cron'
+import { logger } from '@/lib/logger'
 import {
   successResponse,
   errorResponse,
   handleApiError,
   ErrorCodes,
-} from '../../../lib/api-response'
+} from '@/lib/api-response'
 
 // Constant-time string comparison to prevent timing attacks
 function secureCompare(a: string, b: string): boolean {

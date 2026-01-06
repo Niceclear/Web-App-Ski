@@ -1,6 +1,6 @@
 'use client'
 
-import { SlopesData } from '../lib/types'
+import { SlopesData } from '@/lib/types'
 import { Mountain, TrendingUp, TrendingDown, AlertTriangle, XCircle, Snowflake } from 'lucide-react'
 
 interface SlopesSummaryProps {

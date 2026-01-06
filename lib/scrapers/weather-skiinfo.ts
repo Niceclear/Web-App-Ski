@@ -1,8 +1,8 @@
 import 'dotenv/config'
 import * as cheerio from 'cheerio'
-import { WeatherData, WeatherDay, WeatherCondition } from '../types'
-import { db } from '../db'
-import { weatherData as weatherDataTable, skiResorts } from '../schema'
+import { WeatherData, WeatherDay, WeatherCondition } from '@/lib/types'
+import { db } from '@/lib/db'
+import { weatherData as weatherDataTable, skiResorts } from '@/lib/schema'
 import { eq, desc } from 'drizzle-orm'
 
 // Pool de User-Agents pour rotation

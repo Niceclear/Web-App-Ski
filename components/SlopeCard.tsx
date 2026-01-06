@@ -1,6 +1,6 @@
 'use client'
 
-import { SlopesDifficulty } from '../lib/types'
+import { SlopesDifficulty } from '@/lib/types'
 
 interface SlopeCardProps {
   difficulty: 'green' | 'blue' | 'red' | 'black'

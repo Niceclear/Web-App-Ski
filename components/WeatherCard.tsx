@@ -1,6 +1,6 @@
 'use client'
 import { useState } from 'react'
-import { WeatherDay, WeatherElevation } from '../lib/types'
+import { WeatherDay, WeatherElevation } from '@/lib/types'
 import { Cloud, CloudSun, Sun, Snowflake, Wind, Thermometer, Calendar, ChevronLeft, ChevronRight, Mountain, ArrowDown } from 'lucide-react'
 import { format, parseISO, isSameDay, addDays } from 'date-fns'
 import { fr } from 'date-fns/locale'

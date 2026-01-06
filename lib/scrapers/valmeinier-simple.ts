@@ -1,7 +1,7 @@
 import 'dotenv/config'
 import * as cheerio from 'cheerio'
-import { db } from '../db'
-import { slopesData, skiResorts } from '../schema'
+import { db } from '@/lib/db'
+import { slopesData, skiResorts } from '@/lib/schema'
 import { eq } from 'drizzle-orm'
 
 interface ScrapedData {

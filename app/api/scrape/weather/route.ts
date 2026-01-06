@@ -1,12 +1,12 @@
 import { NextRequest } from 'next/server'
-import { runWeatherScraper } from '../../../../lib/scrapers/weather-skiinfo'
-import { logger } from '../../../../lib/logger'
+import { runWeatherScraper } from '@/lib/scrapers/weather-skiinfo'
+import { logger } from '@/lib/logger'
 import {
   successResponse,
   errorResponse,
   handleApiError,
   ErrorCodes,
-} from '../../../../lib/api-response'
+} from '@/lib/api-response'
 
 // Constant-time string comparison to prevent timing attacks
 function secureCompare(a: string, b: string): boolean {

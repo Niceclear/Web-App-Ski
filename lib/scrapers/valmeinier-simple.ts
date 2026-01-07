@@ -85,7 +85,7 @@ export async function scrapeValmeinierSimple(): Promise<ScrapedData | null> {
       blueSlopes: { total: 0, open: 0 },
       redSlopes: { total: 0, open: 0 },
       blackSlopes: { total: 0, open: 0 },
-      rawData: {}
+      rawData: { html }
     }
 
     // Extract slope data from the pistes__summary divs

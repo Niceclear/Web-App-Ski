@@ -164,7 +164,7 @@ export default function WeatherCard({ forecast, scrapedAt }: WeatherCardProps) {
         <div className="flex items-center justify-between px-2">
           <div className="flex items-center gap-2">
             <Snowflake className="w-5 h-5 text-blue-400" />
-            <span className="text-sm font-medium text-gray-600">Cumul de neige</span>
+            <span className="text-sm font-medium text-gray-600">Cumul de neige à venir</span>
           </div>
           <div className="flex items-center gap-2">
             <span className="text-2xl font-bold text-blue-600">

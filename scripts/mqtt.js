@@ -33,8 +33,8 @@ const config = {
 };
 
 // Topic à écouter
-// const topic = 'poulpe/DigiSnow/valmeinier/snow/latest';
-const topic = 'poulpe/DigiSnow/valmeinier/assets/all';
+const topic = 'poulpe/DigiSnow/valmeinier/snow/latest';
+// const topic = 'poulpe/DigiSnow/valmeinier/assets/all';
 
 // Fichier de sortie pour sauvegarder les résultats
 const outputDir = path.join(__dirname, '../test');

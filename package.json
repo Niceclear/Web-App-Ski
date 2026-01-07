@@ -33,6 +33,7 @@
     "dotenv": "^16.6.1",
     "drizzle-orm": "^0.45.1",
     "lucide-react": "^0.562.0",
+    "mqtt": "^5.14.1",
     "next": "^14.2.35",
     "node-cron": "^4.2.1",
     "postcss": "^8.4.49",

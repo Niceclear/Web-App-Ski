@@ -1,5 +1,5 @@
 import cron from 'node-cron'
-import { runValmeinierSimpleScraper } from './scrapers/valmeinier-simple'
+import { runGalibierThaborMqttScraper } from './scrapers/galibier-thabor-mqtt'
 import { runWeatherScraper } from './scrapers/weather-skiinfo'
 import { db } from './db'
 import { slopesData, skiResorts } from './schema'
@@ -84,7 +84,7 @@ export async function manualScrape() {
       }
     }
 
-    await runValmeinierSimpleScraper()
+    await runGalibierThaborMqttScraper()
     await runWeatherScraper()
     console.log('[Manual] ✅ Manual scrape (slopes & weather) completed')
   } catch (error) {

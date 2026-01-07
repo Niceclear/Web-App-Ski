@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import { db } from '@/lib/db'
-import { slopesData, slopes, skiResorts } from '@/lib/schema'
+import { slopesData, skiResorts } from '@/lib/schema'
 import { desc, eq } from 'drizzle-orm'
 
 // Force dynamic rendering for this route (uses request.url)
@@ -63,28 +63,10 @@ export async function GET(request: Request) {
       .orderBy(desc(slopesData.scrapedAt))
       .limit(limit)
 
-    // Get current slopes status - Only select fields needed by client
-    // Exclude: createdAt, lastUpdated (internal metadata)
-    const currentSlopes = await db
-      .select({
-        id: slopes.id,
-        resortId: slopes.resortId,
-        name: slopes.name,
-        difficulty: slopes.difficulty,
-        status: slopes.status,
-        externalId: slopes.externalId,
-        length: slopes.length,
-        altitude: slopes.altitude,
-      })
-      .from(slopes)
-      .where(eq(slopes.resortId, resortId))
-      .orderBy(slopes.difficulty, slopes.name)
-
     return NextResponse.json({
       resort: resort[0],
       latestData: latestData[0] || null,
       historicalData: latestData,
-      slopes: currentSlopes,
     }, {
       headers: {
         'Cache-Control': 'no-cache, no-store, must-revalidate',

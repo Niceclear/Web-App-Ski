@@ -6,7 +6,7 @@ import useSWR from 'swr'
 import { SlopesApiResponse, WeatherData } from '@/lib/types'
 import SlopesSummary from '@/components/SlopesSummary'
 import SlopeCard from '@/components/SlopeCard'
-import ResortSelector from '@/components/ResortSelector'
+import ResortToggle from '@/components/ResortToggle'
 import DateTimeSelector from '@/components/DateTimeSelector'
 import PasswordModal from '@/components/PasswordModal'
 import WeatherCard from '@/components/WeatherCard'
@@ -125,12 +125,6 @@ export default function DashboardPage() {
   const displayedData = selectedDataId === null
     ? data?.latestData
     : data?.historicalData.find(d => d.id === selectedDataId)
-
-  // Liste des stations (pour le futur)
-  const resorts = [
-    { name: 'Valmeinier', location: 'Savoie' },
-    // Ajoutez d'autres stations ici plus tard
-  ]
 
   // Fonction pour le scraping manuel avec mot de passe
   const handleManualScrape = async (password: string) => {
@@ -263,8 +257,7 @@ export default function DashboardPage() {
 
             <nav className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto" aria-label="Filtres et actions">
               <div className="flex flex-row gap-3 w-full sm:w-auto">
-                <ResortSelector
-                  resorts={resorts}
+                <ResortToggle
                   selected={selectedResort}
                   onChange={setSelectedResort}
                 />

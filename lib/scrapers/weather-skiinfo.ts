@@ -1,6 +1,8 @@
 import 'dotenv/config'
 import * as cheerio from 'cheerio'
-import { WeatherData, WeatherDay, WeatherCondition } from '@/lib/types'
+import mqtt from 'mqtt'
+import crypto from 'crypto'
+import { WeatherData, WeatherDay, WeatherCondition, SnowDepth } from '@/lib/types'
 import { db } from '@/lib/db'
 import { weatherData as weatherDataTable, skiResorts } from '@/lib/schema'
 import { eq, desc } from 'drizzle-orm'
@@ -16,6 +18,112 @@ const USER_AGENTS = [
 
 function getRandomUserAgent(): string {
   return USER_AGENTS[Math.floor(Math.random() * USER_AGENTS.length)]
+}
+
+function generateClientId(length = 20): string {
+  return crypto.randomBytes(length).reduce((t, i) => {
+    i &= 63
+    if (i < 36) {
+      t += i.toString(36)
+    } else if (i < 62) {
+      t += (i - 26).toString(36).toUpperCase()
+    } else if (i > 62) {
+      t += '-'
+    } else {
+      t += '_'
+    }
+    return t
+  }, '')
+}
+
+// Récupérer les données d'enneigement via MQTT
+async function fetchSnowDepthMqtt(): Promise<{ base: SnowDepth | null; summit: SnowDepth | null } | null> {
+  console.log('[Weather Scraper] Fetching snow depth data from MQTT')
+
+  try {
+    const mqttConfig = {
+      host: 'wss.mqtt.digibox.app',
+      port: 443,
+      protocol: 'wss' as const,
+      path: '/mqtt',
+      username: 'digiPoulpe',
+      password: 'WyumfcItTe2ZJ1HhOovJ',
+      clientId: generateClientId(20),
+      protocolId: 'MQIsdp' as const,
+      protocolVersion: 3 as const
+    }
+
+    const topic = 'poulpe/DigiSnow/valmeinier/snow/latest'
+    const timeout = 30000
+
+    const snowData: SnowDepth[] = await new Promise((resolve, reject) => {
+      const client = mqtt.connect(`wss://${mqttConfig.host}:${mqttConfig.port}${mqttConfig.path}`, {
+        username: mqttConfig.username,
+        password: mqttConfig.password,
+        clientId: mqttConfig.clientId,
+        protocolId: mqttConfig.protocolId,
+        protocolVersion: mqttConfig.protocolVersion,
+        keepalive: 60,
+        reconnectPeriod: 5000,
+        clean: true,
+        wsOptions: {
+          headers: {
+            'Origin': 'https://valmeinier.digisnow.app'
+          }
+        }
+      })
+
+      const timeoutId = setTimeout(() => {
+        console.error('[Weather Scraper] MQTT timeout waiting for snow data')
+        client.end()
+        reject(new Error('MQTT timeout'))
+      }, timeout)
+
+      client.on('connect', () => {
+        console.log('[Weather Scraper] Connected to MQTT broker for snow data')
+
+        client.subscribe(topic, { qos: 0 }, (err) => {
+          if (err) {
+            clearTimeout(timeoutId)
+            console.error('[Weather Scraper] Subscribe error:', err)
+            client.end()
+            reject(err)
+          } else {
+            console.log(`[Weather Scraper] Subscribed to ${topic}`)
+          }
+        })
+      })
+
+      client.on('message', (_receivedTopic, message) => {
+        clearTimeout(timeoutId)
+        console.log('[Weather Scraper] Snow data received')
+        client.end()
+        resolve(JSON.parse(message.toString()))
+      })
+
+      client.on('error', (error) => {
+        clearTimeout(timeoutId)
+        console.error('[Weather Scraper] MQTT error:', error)
+        client.end()
+        reject(error)
+      })
+    })
+
+    // Extraire les données bas station et haut station
+    const baseStation = snowData.find(d => d.where === 'Bas station') || null
+    const summitStation = snowData.find(d => d.where === 'Haut station') || null
+
+    console.log(`[Weather Scraper] Snow depth - Base: ${baseStation?.total_depth || 'N/A'}cm, Summit: ${summitStation?.total_depth || 'N/A'}cm`)
+
+    return {
+      base: baseStation,
+      summit: summitStation
+    }
+
+  } catch (error) {
+    console.error('[Weather Scraper] Error fetching snow depth:', error)
+    return null
+  }
 }
 
 interface SkiInfoNextData {
@@ -151,6 +259,7 @@ export async function saveWeatherData(data: WeatherData, resortId: number) {
   try {
     await db.insert(weatherDataTable).values({
       resortId,
+      snowDepth: data.snowDepth,
       forecast: data.forecast,
       success: true,
     })
@@ -192,6 +301,7 @@ export async function getLatestWeatherData(resortId: number): Promise<WeatherDat
     return {
       resortName: resort?.name || 'Valmeinier',
       scrapedAt: latest.scrapedAt.toISOString(),
+      snowDepth: latest.snowDepth as { base: SnowDepth | null; summit: SnowDepth | null } | undefined,
       forecast: latest.forecast as WeatherDay[],
     }
   } catch (error) {
@@ -223,15 +333,25 @@ export async function runWeatherScraper() {
       resort = newResort
     }
 
+    // Récupérer les prévisions météo depuis SkiInfo
     const scrapedData = await scrapeWeatherSkiInfo('valmeinier')
 
-    if (scrapedData) {
-      await saveWeatherData(scrapedData, resort.id)
-      console.log('[Weather Scraper] ✅ Weather scraping completed successfully')
-      return scrapedData
-    } else {
+    if (!scrapedData) {
       throw new Error('No weather data scraped')
     }
+
+    // Récupérer les données d'enneigement depuis MQTT
+    const snowDepth = await fetchSnowDepthMqtt()
+
+    // Ajouter les données d'enneigement aux données météo
+    if (snowDepth) {
+      scrapedData.snowDepth = snowDepth
+    }
+
+    await saveWeatherData(scrapedData, resort.id)
+    console.log('[Weather Scraper] ✅ Weather scraping completed successfully')
+    return scrapedData
+
   } catch (error) {
     console.error('[Weather Scraper] ❌ Weather scraping failed:', error)
     throw error

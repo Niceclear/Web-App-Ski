@@ -48,6 +48,32 @@ export const weatherData = pgTable('weather_data', {
 
   scrapedAt: timestamp('scraped_at').defaultNow().notNull(),
 
+  // Données d'enneigement (depuis MQTT)
+  snowDepth: jsonb('snow_depth').$type<{
+    base: {
+      where: string
+      zoneId: number
+      fresh_depth: number
+      total_depth: number
+      percent_artificial_snow: number
+      last_fall: string
+      quality: string
+      backcountry_quality: string
+      lastModified: string
+    } | null
+    summit: {
+      where: string
+      zoneId: number
+      fresh_depth: number
+      total_depth: number
+      percent_artificial_snow: number
+      last_fall: string
+      quality: string
+      backcountry_quality: string
+      lastModified: string
+    } | null
+  }>(),
+
   // Prévisions météo (tableau de jours)
   forecast: jsonb('forecast').$type<Array<{
     datetime: string

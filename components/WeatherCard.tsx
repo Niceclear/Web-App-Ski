@@ -1,6 +1,6 @@
 'use client'
 import { useState } from 'react'
-import { WeatherDay, WeatherElevation } from '@/lib/types'
+import { WeatherDay, WeatherElevation, SnowDepth } from '@/lib/types'
 import { Cloud, CloudSun, Sun, Snowflake, Wind, Thermometer, Calendar, ChevronLeft, ChevronRight, Mountain, ArrowDown } from 'lucide-react'
 import { format, parseISO, isSameDay, addDays } from 'date-fns'
 import { fr } from 'date-fns/locale'
@@ -8,6 +8,10 @@ import { fr } from 'date-fns/locale'
 interface WeatherCardProps {
   forecast: WeatherDay[]
   scrapedAt?: string
+  snowDepth?: {
+    base: SnowDepth | null
+    summit: SnowDepth | null
+  }
 }
 
 function getWeatherIcon(type: string, size = "w-12 h-12") {
@@ -33,7 +37,7 @@ function getWeatherIcon(type: string, size = "w-12 h-12") {
   return <Cloud className={`${size} text-gray-400`} />
 }
 
-export default function WeatherCard({ forecast, scrapedAt }: WeatherCardProps) {
+export default function WeatherCard({ forecast, scrapedAt, snowDepth }: WeatherCardProps) {
   const [selectedLayer, setSelectedLayer] = useState<WeatherElevation>('base')
 
   const upcomingWeather = forecast || []
@@ -56,7 +60,7 @@ export default function WeatherCard({ forecast, scrapedAt }: WeatherCardProps) {
             <CloudSun className="w-5 h-5 text-white" />
           </div>
           <div>
-            <h2 className="text-lg font-bold text-gray-900">Météo</h2>
+            <h2 className="text-lg font-bold text-gray-900">Météo & Neige</h2>
             {scrapedAt && (
               <p className="text-[10px] text-gray-400 font-medium leading-tight">
                 Dernière mise à jour : {format(new Date(scrapedAt), "HH:mm", { locale: fr })}
@@ -83,6 +87,65 @@ export default function WeatherCard({ forecast, scrapedAt }: WeatherCardProps) {
           ))}
         </div>
       </div>
+
+      {/* Section Enneigement */}
+      {snowDepth && (snowDepth.base || snowDepth.summit) && (
+        <div className="mb-6 bg-gradient-to-br from-blue-50 to-blue-100/50 rounded-xl p-4 border border-blue-200/50">
+          <div className="flex items-center gap-2 mb-3">
+            <Snowflake className="w-5 h-5 text-blue-600" />
+            <h3 className="text-sm font-bold text-blue-900">Enneigement actuel</h3>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            {/* Bas Station */}
+            {snowDepth.base && (
+              <div className="bg-white rounded-lg p-3 shadow-sm">
+                <div className="flex items-center gap-2 mb-2">
+                  <ArrowDown className="w-4 h-4 text-gray-500" />
+                  <span className="text-xs font-medium text-gray-600">Bas Station</span>
+                </div>
+                <div className="space-y-1">
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-2xl font-bold text-blue-600">{snowDepth.base.total_depth}</span>
+                    <span className="text-xs text-gray-500">cm</span>
+                  </div>
+                  {snowDepth.base.fresh_depth > 0 && (
+                    <div className="flex items-center gap-1">
+                      <Snowflake className="w-3 h-3 text-blue-400" />
+                      <span className="text-xs text-gray-600">
+                        +{snowDepth.base.fresh_depth}cm fraîche
+                      </span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* Haut Station */}
+            {snowDepth.summit && (
+              <div className="bg-white rounded-lg p-3 shadow-sm">
+                <div className="flex items-center gap-2 mb-2">
+                  <Mountain className="w-4 h-4 text-gray-500" />
+                  <span className="text-xs font-medium text-gray-600">Haut Station</span>
+                </div>
+                <div className="space-y-1">
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-2xl font-bold text-blue-600">{snowDepth.summit.total_depth}</span>
+                    <span className="text-xs text-gray-500">cm</span>
+                  </div>
+                  {snowDepth.summit.fresh_depth > 0 && (
+                    <div className="flex items-center gap-1">
+                      <Snowflake className="w-3 h-3 text-blue-400" />
+                      <span className="text-xs text-gray-600">
+                        +{snowDepth.summit.fresh_depth}cm fraîche
+                      </span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Table view */}
       <div className="overflow-hidden">

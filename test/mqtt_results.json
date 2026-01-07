@@ -1,0 +1,36 @@
+[
+  {
+    "timestamp": "2026-01-07T18:39:26.244Z",
+    "topic": "poulpe/DigiSnow/valmeinier/snow/latest",
+    "data": [
+      {
+        "where": "Bas station",
+        "zoneId": 1,
+        "fresh_depth": 0,
+        "lastModified": "2025-12-28T09:22:37.000Z",
+        "total_depth": 15,
+        "percent_artificial_snow": 0,
+        "last_fall": "2025-12-07T08:18",
+        "quality": "hard",
+        "backcountry_quality": "hard",
+        "createdAt": "2025-12-28T09:22:22.601Z",
+        "id": 7,
+        "snowTemperature": null
+      },
+      {
+        "where": "Haut station",
+        "zoneId": 2,
+        "fresh_depth": 0,
+        "lastModified": "2025-12-13T07:22:17.068Z",
+        "total_depth": 40,
+        "percent_artificial_snow": 0,
+        "last_fall": "2025-12-08T08:18",
+        "quality": "hard",
+        "backcountry_quality": "hard",
+        "createdAt": "2025-12-13T07:22:17.068Z",
+        "id": 4,
+        "snowTemperature": null
+      }
+    ]
+  }
+]

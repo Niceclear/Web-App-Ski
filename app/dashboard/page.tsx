@@ -332,6 +332,7 @@ export default function DashboardPage() {
               <WeatherCard
                 forecast={weatherData.forecast}
                 scrapedAt={weatherData.scrapedAt}
+                snowDepth={weatherData.snowDepth}
               />
             ) : (
               <div className="bg-white rounded-2xl p-8 border-2 border-dashed border-gray-300 text-center">

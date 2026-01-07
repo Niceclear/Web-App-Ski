@@ -68,8 +68,24 @@ export interface WeatherDay {
   summit: WeatherCondition
 }
 
+export interface SnowDepth {
+  where: string // 'Bas station' ou 'Haut station'
+  zoneId: number
+  fresh_depth: number // cm de neige fraîche
+  total_depth: number // cm de neige totale
+  percent_artificial_snow: number
+  last_fall: string // Date de dernière chute
+  quality: string // 'hard', 'powder', etc.
+  backcountry_quality: string
+  lastModified: string
+}
+
 export interface WeatherData {
   resortName: string
   scrapedAt: string
+  snowDepth?: {
+    base: SnowDepth | null
+    summit: SnowDepth | null
+  }
   forecast: WeatherDay[]
 }

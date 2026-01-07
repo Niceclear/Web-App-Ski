@@ -1,5 +1,6 @@
 import 'dotenv/config'
 import * as cheerio from 'cheerio'
+import { gzipSync } from 'zlib'
 import { db } from '@/lib/db'
 import { slopesData, skiResorts } from '@/lib/schema'
 import { eq } from 'drizzle-orm'
@@ -76,6 +77,9 @@ export async function scrapeValmeinierSimple(): Promise<ScrapedData | null> {
     // Load HTML into Cheerio
     const $ = cheerio.load(html)
 
+    // Compress HTML with gzip for efficient storage
+    const compressedHtml = gzipSync(html).toString('base64')
+
     // Initialize data structure
     const scrapedData: ScrapedData = {
       totalSlopes: 0,
@@ -85,7 +89,7 @@ export async function scrapeValmeinierSimple(): Promise<ScrapedData | null> {
       blueSlopes: { total: 0, open: 0 },
       redSlopes: { total: 0, open: 0 },
       blackSlopes: { total: 0, open: 0 },
-      rawData: { html }
+      rawData: { html: compressedHtml }
     }
 
     // Extract slope data from the pistes__summary divs

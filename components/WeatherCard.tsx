@@ -16,7 +16,6 @@ interface WeatherCardProps {
 
 function getWeatherIcon(type: string, size = "w-12 h-12") {
   const t = type.toLowerCase()
-  console.log(t)
 
   // Snow conditions
   if (t.includes('snow') || t.includes('neige')) return <Snowflake className={`${size} text-blue-400`} />

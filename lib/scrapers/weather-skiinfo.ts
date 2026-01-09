@@ -240,7 +240,7 @@ export async function scrapeWeatherSkiInfo(resortSlug: string = 'valmeinier'): P
 
     const weatherData: WeatherData = {
       resortName: resortSlug === 'valmeinier' ? 'Valmeinier' : resortSlug,
-      scrapedAt: new Date().toISOString(),
+      createdAt: new Date().toISOString(),
       forecast,
     }
 
@@ -300,7 +300,7 @@ export async function getLatestWeatherData(resortId: number): Promise<WeatherDat
 
     return {
       resortName: resort?.name || 'Valmeinier',
-      scrapedAt: latest.scrapedAt.toISOString(),
+      createdAt: latest.scrapedAt.toISOString(),
       snowDepth: latest.snowDepth as { base: SnowDepth | null; summit: SnowDepth | null } | undefined,
       forecast: latest.forecast as WeatherDay[],
     }

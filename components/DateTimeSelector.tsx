@@ -6,7 +6,7 @@ import { format } from 'date-fns'
 import { fr } from 'date-fns/locale'
 
 interface DateTimeSelectorProps {
-  historicalData: { scrapedAt: string; id: number }[]
+  historicalData: { date: string; id: number }[]
   selectedId: number | null
   onSelect: (id: number | null) => void
 }
@@ -62,27 +62,27 @@ export default function DateTimeSelector({ historicalData, selectedId, onSelect 
                     Historique
                   </p>
 
-                  {historicalData.map((data) => {
-                    const date = new Date(data.scrapedAt)
+                  {historicalData.map((item) => {
+                    const itemDate = new Date(item.date)
                     return (
                       <button
-                        key={data.id}
+                        key={item.id}
                         onClick={() => {
-                          onSelect(data.id)
+                          onSelect(item.id)
                           setShowHistory(false)
                         }}
                         className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${
-                          selectedId === data.id
+                          selectedId === item.id
                             ? 'bg-blue-100 text-blue-800 font-semibold'
                             : 'hover:bg-gray-100 text-gray-900'
                         }`}
                       >
                         <div className="flex flex-col gap-1">
                           <span className="font-medium">
-                            {format(date, 'EEEE d MMMM yyyy', { locale: fr })}
+                            {format(itemDate, 'EEEE d MMMM yyyy', { locale: fr })}
                           </span>
-                          <span className={`text-sm ${selectedId === data.id ? 'text-blue-700' : 'text-gray-700'}`}>
-                            {format(date, 'HH:mm', { locale: fr })}
+                          <span className={`text-sm ${selectedId === item.id ? 'text-blue-700' : 'text-gray-700'}`}>
+                            {format(itemDate, 'HH:mm', { locale: fr })}
                           </span>
                         </div>
                       </button>

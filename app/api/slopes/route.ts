@@ -41,13 +41,11 @@ export async function GET(request: Request) {
     const resortId = resort[0].id
 
     // Get latest slopes data - Only select fields needed by client
-    // Exclude: rawData (debug data), errorMessage (internal), createdAt (internal metadata)
-    // Keep scrapedAt as it's displayed to user as "Last update"
+    // Exclude: rawData (debug data), errorMessage (internal), createdAt (internal metadata), scrapedAt
     const latestData = await db
       .select({
         id: slopesData.id,
         resortId: slopesData.resortId,
-        scrapedAt: slopesData.scrapedAt,
         date: slopesData.date,
         totalSlopes: slopesData.totalSlopes,
         openSlopes: slopesData.openSlopes,

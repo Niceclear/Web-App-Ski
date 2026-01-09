@@ -249,8 +249,8 @@ export default function DashboardPage() {
               </h1>
               <p className="text-sm text-gray-600 mt-1">
                 <span className="sr-only">Dernière mise à jour : </span>
-                <time dateTime={displayedData.scrapedAt}>
-                  Dernière mise à jour : {format(new Date(displayedData.scrapedAt), "d MMMM yyyy 'à' HH:mm", { locale: fr })}
+                <time dateTime={displayedData.date}>
+                  Dernière mise à jour : {format(new Date(displayedData.date), "d MMMM yyyy 'à' HH:mm", { locale: fr })}
                 </time>
               </p>
             </div>
@@ -264,7 +264,7 @@ export default function DashboardPage() {
 
                 <DateTimeSelector
                   historicalData={data.historicalData.map(d => ({
-                    scrapedAt: d.scrapedAt,
+                    date: d.date,
                     id: d.id
                   }))}
                   selectedId={selectedDataId}
@@ -331,7 +331,7 @@ export default function DashboardPage() {
             ) : weatherData ? (
               <WeatherCard
                 forecast={weatherData.forecast}
-                scrapedAt={weatherData.scrapedAt}
+                createdAt={weatherData.createdAt}
                 snowDepth={weatherData.snowDepth}
               />
             ) : (

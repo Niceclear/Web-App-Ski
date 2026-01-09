@@ -55,6 +55,11 @@ const nextConfig = {
       {
         source: '/:path*',
         headers: [
+          // Block all indexing via HTTP header
+          {
+            key: 'X-Robots-Tag',
+            value: 'noindex, nofollow, noarchive, nosnippet, noimageindex',
+          },
           // DNS Prefetch for performance
           {
             key: 'X-DNS-Prefetch-Control',

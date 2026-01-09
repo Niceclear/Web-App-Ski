@@ -6,11 +6,10 @@ export interface SlopesDifficulty {
 }
 
 // SlopesData - Client-facing type (excludes sensitive/internal fields)
-// Excluded fields: rawData, errorMessage, createdAt
+// Excluded fields: rawData, errorMessage, createdAt, scrapedAt
 export interface SlopesData {
   id: number
   resortId: number
-  scrapedAt: string  // Kept for "Last update" display
   date: string
   totalSlopes: number | null
   openSlopes: number | null
@@ -82,7 +81,7 @@ export interface SnowDepth {
 
 export interface WeatherData {
   resortName: string
-  scrapedAt: string
+  createdAt: string
   snowDepth?: {
     base: SnowDepth | null
     summit: SnowDepth | null

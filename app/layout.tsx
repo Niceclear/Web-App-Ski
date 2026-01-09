@@ -22,8 +22,12 @@ export const metadata: Metadata = {
   creator: 'Web App Ski',
   publisher: 'Web App Ski',
   robots: {
-    index: true,
-    follow: true,
+    index: false,
+    follow: false,
+    noarchive: true,
+    nosnippet: true,
+    noimageindex: true,
+    nocache: true,
   },
   openGraph: {
     type: 'website',

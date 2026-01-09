@@ -45,12 +45,11 @@ export async function GET(request: Request) {
     dateThreshold.setDate(dateThreshold.getDate() - days)
 
     // Get historical data - Only select fields needed by client
-    // Exclude: rawData (debug data), errorMessage (internal), createdAt (internal metadata)
+    // Exclude: rawData (debug data), errorMessage (internal), createdAt (internal metadata), scrapedAt
     const historicalData = await db
       .select({
         id: slopesData.id,
         resortId: slopesData.resortId,
-        scrapedAt: slopesData.scrapedAt,
         date: slopesData.date,
         totalSlopes: slopesData.totalSlopes,
         openSlopes: slopesData.openSlopes,

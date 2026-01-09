@@ -7,7 +7,7 @@ import { fr } from 'date-fns/locale'
 
 interface WeatherCardProps {
   forecast: WeatherDay[]
-  scrapedAt?: string
+  createdAt?: string
   snowDepth?: {
     base: SnowDepth | null
     summit: SnowDepth | null
@@ -36,7 +36,7 @@ function getWeatherIcon(type: string, size = "w-12 h-12") {
   return <Cloud className={`${size} text-gray-400`} />
 }
 
-export default function WeatherCard({ forecast, scrapedAt, snowDepth }: WeatherCardProps) {
+export default function WeatherCard({ forecast, createdAt, snowDepth }: WeatherCardProps) {
   const [selectedLayer, setSelectedLayer] = useState<WeatherElevation>('base')
 
   const upcomingWeather = forecast || []
@@ -60,9 +60,9 @@ export default function WeatherCard({ forecast, scrapedAt, snowDepth }: WeatherC
           </div>
           <div>
             <h2 className="text-lg font-bold text-gray-900">Météo & Neige</h2>
-            {scrapedAt && (
+            {createdAt && (
               <p className="text-[10px] text-gray-400 font-medium leading-tight">
-                Dernière mise à jour : {format(new Date(scrapedAt), "HH:mm", { locale: fr })}
+                Dernière mise à jour : {format(new Date(createdAt), "HH:mm", { locale: fr })}
               </p>
             )}
           </div>
